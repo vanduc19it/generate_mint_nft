@@ -6,8 +6,13 @@ import axios from 'axios'
 import {Buffer} from 'buffer'
 import { NFTStorage, File } from 'nft.storage'
 import { ethers } from "ethers";
+import config from './config.json';
+import NFT from './abiNFT.json'
+
+
 
 function App() {
+  
 
   const [provider, setProvider] = useState(null);
   const [wallet, setWallet] = useState(null);
@@ -32,7 +37,9 @@ function App() {
   const handleNFT = async (e) => {
     e.preventDefault();
     console.log(name, description);
-
+    if(provider == null) {
+      alert("Please connect your wallet")
+    }
 
   //get image with name and description from huggingface
   const res = await axios({
@@ -54,11 +61,13 @@ function App() {
   const nftstorage = new NFTStorage({token: process.env.REACT_APP_NFT_STORAGE_KEY})
   console.log(nftstorage)
 
+  console.log(` ${name} `)
   //upload image to nftstorage
   const { ipnft } = await nftstorage.store({
-    image: new File([dataImg], "image.png", {type: "image/png"}),
-    name:name,
-    description:description,
+    "name": name,
+    "description": description,
+    "image": new File([dataImg], "image", {type: "image/png"}),
+    
   })
 
   //url metadata to mint nft
@@ -66,19 +75,17 @@ function App() {
   console.log(ipfsURL)
 
 
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
-  // setProvider(provider);
-
-  // const nft = new ethers.Contract("NFT");
-  // console.log(nft)
-
+  const { chainId } = await provider.getNetwork()
 
   
-  // console.log("Successfully deployed smart contract to: ", nft.address);
+  const nft = new ethers.Contract(config[chainId].nft.address, NFT, provider)
 
-  // await nft.mint(ipfsURL);
 
-  // console.log("NFT successfully minted");
+
+  const signer = await provider.getSigner();
+
+  await nft.connect(signer).mint(ipfsURL)
+
   }
   return (
     <div className="App">
