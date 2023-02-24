@@ -5,19 +5,44 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 .logo {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 .title {
   padding-left: 5px;
+  font-family: "Lucida Console", "Courier New";
 }
 .body {
   display: flex;
   justify-content: space-evenly;
   margin: 60px 60px;
+  flex-wrap: wrap;
 }
 .card {
-  margin: 0px 120px;
+  width: 90%;
+  justify-content: center;
+  margin: 0px;
+  border: 6px solid #24badf;
+}
+.container {
+  display: flex;
+  justify-content: center;
+}
+.form-group {
+  align-items: center;
+}
+.img {
+  justify-content: center;
+  display: flex;
+}
+.spin {
+  display: flex;
+  justify-content:center;
+  margin-top: 25px;
+  font-family: "Lucida Console", "Courier New";
 }
